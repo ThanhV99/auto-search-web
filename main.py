@@ -34,14 +34,13 @@ def autoSearchWebsite(keyword, my_website, max_page):
                     i.click()
                     is_page = True
                     
-                    time.sleep(random.randint(15,20))
+                    time.sleep(random.randint(7,10))
                     scroll_down(browser)
-                    time.sleep(5)
-                    nextPage(browser)
-                    time.sleep(5)
-                    scroll_down(browser)
-                    
-                    time.sleep(random.randint(15,20))
+                    ########
+                    browser.execute_script(f"window.scrollBy(0, -200);")
+                    browser.find_element(By.XPATH, '//*[@id="comments"]/button').click()
+                    time.sleep(random.randint(10,15))
+                    ########
                     break
 
             if not is_page:
@@ -61,9 +60,6 @@ def autoSearchWebsite(keyword, my_website, max_page):
     time.sleep(2)
 
     browser.quit()
-    
-def nextPage(browser):
-    browser.find_element(By.XPATH, '//*[@id="main"]/section/div/div/article[1]/div/a').click()
 
 
 def scroll_down(browser):
@@ -72,20 +68,20 @@ def scroll_down(browser):
     num_scrolls = int(total_height / viewport_height)
     
     max_scroll = browser.execute_script("return window.innerHeight;")
-    scroll_distance = random.randint(100, 150)
-    for i in range(num_scrolls+5):
+    scroll_distance = random.randint(100, max_scroll)
+    for i in range(num_scrolls):
         browser.execute_script(f"window.scrollBy(0, {scroll_distance});")
-        time.sleep(random.randint(10,15))
+        time.sleep(random.randint(10,20))
 
 
 def main():
     print("-------------- Auto start -------------------")
-    keyword = 'Bất động sản Giữ phương pháp thặng dư là yêu cầu thực tế từ cuộc sống sssg-erp.com'
+    keyword = 'Phan Công Khanh: “Trùm siêu xe” nổi cỡ nào? sssg-erp'
     my_website = "https://sssg-erp.com"
-    max_page = 5
+    max_page = 9
     print(f"Search result in {max_page} pages")
     print("---------Loop Start-----------------")
-    for i in range(15):
+    for i in range(30):
         print(f"Times: {i+1}")
         autoSearchWebsite(keyword, my_website, max_page=max_page)
         time.sleep(1)
