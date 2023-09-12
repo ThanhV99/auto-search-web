@@ -3,16 +3,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service as ChromeService
 import time
 import random
 
 def directTraffic(my_website):
-    # option = webdriver.ChromeOptions()
+    option = webdriver.ChromeOptions()
     # option.add_argument("--headless")
     # option.add_argument("--disable-gpu")
-    browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    browser = webdriver.Chrome(options = option)
     browser.get(my_website)
 
     time.sleep(5)
@@ -31,10 +29,10 @@ def directTraffic(my_website):
 
 
 def autoSearchWebsite(keyword, my_website, max_page):
-    # option = webdriver.ChromeOptions()
+    option = webdriver.ChromeOptions()
     # option.add_argument("--headless")
     # option.add_argument("--disable-gpu")
-    browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    browser = webdriver.Chrome(options = option)
     browser.get("https://www.google.com/")
     time.sleep(2)
 
@@ -63,16 +61,12 @@ def autoSearchWebsite(keyword, my_website, max_page):
                     ########
                     browser.execute_script(f"window.scrollBy(0, -200);")
                     browser.find_element(By.XPATH, '//*[@id="comments"]/button').click()
-                    time.sleep(random.randint(15,20))
+                    time.sleep(random.randint(10,15))
                     ########
                     browser.find_element(By.XPATH, '//*[@id="main"]/section/div/div/article[1]/div/a').click()
                     time.sleep(random.randint(7,10))
                     scroll_down(browser)
-                    #######
-                    browser.find_element(By.XPATH, '//*[@id="main"]/section/div/div/article[1]/div/a').click()
-                    time.sleep(random.randint(7,10))
-                    scroll_down(browser)
-                    time.sleep(random.randint(15,20))
+                    time.sleep(random.randint(10,15))
                     
                     break
 
@@ -109,17 +103,14 @@ def scroll_down(browser):
 
 def main():
     print("-------------- Auto start -------------------")
-    keyword = 'Apple Pay bắt đầu ra mắt tại Việt Nam'
-    # my_website = 'https://sssg-erp.com'
-    my_website = "https://sssg-erp.com/dai-gia-dieu-cay-le-thanh-than-duoc-diu-de-ra-toa/"
+    my_website = "https://sssg-erp.com"
     max_page = 9
     print(f"Search result in {max_page} pages")
     print("---------Loop Start-----------------")
     for i in range(30):
         print(f"Times: {i+1}")
-        autoSearchWebsite(keyword, my_website, max_page=max_page)
-        # directTraffic(my_website)
-        time.sleep(5)
+        # autoSearchWebsite(keyword, my_website, max_page=max_page)
+        time.sleep(1)
         print("---------------------------")
 
 if __name__ == "__main__":

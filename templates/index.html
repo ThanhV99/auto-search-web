@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Auto Website Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+</head>
+
+<body>
+    <h1>Website Search</h1>
+
+    <form method="POST">
+        <label for="search_type">Choose Search Type:</label>
+        <select name="search_type" required>
+            <option value="keyword">Search with Keyword</option>
+            <option value="website">Get Website</option>
+        </select><br><br>
+
+        <div id="keyword_search">
+            <label for="keyword">Keyword:</label>
+            <input type="text" name="keyword"><br><br>
+        </div>
+
+        <div id="website_get">
+            <label for="website">Website URL:</label>
+            <input type="text" name="website"><br><br>
+        </div>
+
+        <div id="total_section">
+            <label for="section">Section:</label>
+            <input type="number" name="section" value="1" min="1"><br><br>
+        </div>
+
+        <label for="max_page">Max Pages:</label>
+        <input type="number" name="max_page" value="1" min="1"><br><br>
+
+        <input type="submit" id="search-button" value="Search">
+    </form>
+    {% if finish %}
+    <p id="finish-message">Task completed!</p>
+    {% endif %}
+
+    <script>
+        // Show/hide input fields based on the selected search type
+        document.querySelector("select[name='search_type']").addEventListener("change", function () {
+            var selectedOption = this.value;
+            var keywordSearchDiv = document.getElementById("keyword_search");
+            var websiteGetDiv = document.getElementById("website_get");
+
+            if (selectedOption === "keyword") {
+                keywordSearchDiv.style.display = "block";
+                websiteGetDiv.style.display = "none";
+            } else if (selectedOption === "website") {
+                keywordSearchDiv.style.display = "none";
+                websiteGetDiv.style.display = "block";
+            }
+        });
+
+        function disableSearchButton() {
+            var searchButton = document.getElementById("search-button");
+            searchButton.disabled = true;
+            searchButton.value = "Searching...";
+        }
+
+        // Function to enable the "Search" button
+        function enableSearchButton() {
+            var searchButton = document.getElementById("search-button");
+            searchButton.disabled = false;
+            searchButton.value = "Search";
+        }
+
+        // Add an event listener to the form to disable the "Search" button when submitted
+        document.querySelector("form").addEventListener("submit", function () {
+            disableSearchButton();
+        });
+
+        function updateNotification(message) {
+            var notification = document.getElementById('notification');
+            notification.textContent = message;
+        }
+
+    </script>
+
+</body>
+
+</html>
