@@ -8,27 +8,39 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 import time
 import random
 
-def directTraffic(my_website):
-    # option = webdriver.ChromeOptions()
-    # option.add_argument("--headless")
-    # option.add_argument("--disable-gpu")
-    browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    browser.get(my_website)
+import threading
 
-    time.sleep(5)
-    
-    scroll_down(browser)
-    ########
-    browser.execute_script(f"window.scrollBy(0, -200);")
-    browser.find_element(By.XPATH, '//*[@id="comments"]/button').click()
-    time.sleep(random.randint(10,15))
-    ########
-    browser.find_element(By.XPATH, '//*[@id="main"]/section/div/div/article[1]/div/a').click()
-    time.sleep(random.randint(7,10))
-    scroll_down(browser)
-    time.sleep(random.randint(10,15))
-    browser.quit()
+def multi_directTraffic(my_website, number_traffics):
+    threads = []
+    for url, number_traffic in zip(my_website, number_traffics):
+        thread = threading.Thread(target=directTraffic, args=(url, number_traffic))
+        threads.append(thread)
+        
+    # Start all threads
+    for thread in threads:
+        thread.start()
 
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
+        
+
+def directTraffic(url, number_traffic):
+    try:
+        for i in range(number_traffic):
+            try:
+                browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+                browser.get(url)
+                time.sleep(5)
+                scroll_down(browser)
+                # Rest of your code
+            except Exception as e:
+                print(f"An error occurred: {str(e)}")
+            finally:
+                if 'browser' in locals():
+                    browser.quit()
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
 
 def autoSearchWebsite(keyword, my_website, max_page):
     # option = webdriver.ChromeOptions()
